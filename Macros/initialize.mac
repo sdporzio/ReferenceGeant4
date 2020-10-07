@@ -1,0 +1,10 @@
+/control/getEnv SDP_OUTDIR
+/control/getEnv SDP_FILENAME
+
+/analysis/setFileName {SDP_OUTDIR}/{SDP_FILENAME}
+
+/run/verbose 0
+/control/verbose 0
+/control/saveHistory
+
+/run/initialize
