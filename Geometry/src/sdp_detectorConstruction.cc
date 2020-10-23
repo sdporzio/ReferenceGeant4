@@ -45,7 +45,6 @@ G4VPhysicalVolume* sdp_detectorConstruction::Construct()
   G4NistManager* nist = G4NistManager::Instance();
   sdp_materials* materials = new sdp_materials();
   G4Material* air = nist->FindOrBuildMaterial("G4_AIR");
-  G4Material* water = nist->FindOrBuildMaterial("G4_WATER");
   G4Material* glass = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
   G4Material* alum = nist->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
   G4Material* vacuum = materials->vacuum;
@@ -55,8 +54,6 @@ G4VPhysicalVolume* sdp_detectorConstruction::Construct()
   G4double worldSize= 10*cm;
   G4double boxSizeOuter = 5.2*cm;
   G4double boxSizeInner = 5*cm;
-  G4double tubeRadius = 3*mm;
-  G4double tubeLength = 6*mm;
 
   // BUILD THE WORLD
   G4Box* solidWorld =    

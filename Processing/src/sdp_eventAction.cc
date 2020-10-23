@@ -70,10 +70,10 @@ void sdp_eventAction::EndOfEventAction(const G4Event* event)
   for(int i=0; i<n_trajectories; i++)
   {
     G4VTrajectory* currentTrack = (*trajectoryContainer)[i];
-    G4int tid = currentTrack->GetTrackID();
-    G4int gid = currentTrack->GetParentID();
+    // G4int tid = currentTrack->GetTrackID();
+    // G4int gid = currentTrack->GetParentID();
     G4String pname = currentTrack->GetParticleName();
-    G4int pdg = currentTrack->GetPDGEncoding();
+    // G4int pdg = currentTrack->GetPDGEncoding();
   }
 
   //primary positions: Alvine to Davide
