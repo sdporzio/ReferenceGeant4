@@ -8,6 +8,8 @@
 class G4Event;
 class sdp_runAction;
 class sdp_anaTrack;
+class sdp_anaInteraction;
+
 
 class sdp_eventAction : public G4UserEventAction
 {
@@ -27,6 +29,8 @@ class sdp_eventAction : public G4UserEventAction
     
     // Too lazy to put it in private and write methods
     std::map<G4int,sdp_anaTrack> fAnaTrack;
+    std::vector<sdp_anaInteraction> fAnaInteraction;
+    G4int eNumber;
 
 
   private:

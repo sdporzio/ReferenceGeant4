@@ -2,6 +2,7 @@
 #include "sdp_eventAction.hh"
 #include "sdp_runAction.hh"
 #include "sdp_anaTrack.hh"
+#include "sdp_anaInteraction.hh"
 #include "Randomize.hh"
 #include "g4analysis.hh"
 #include "G4RunManager.hh"
@@ -28,8 +29,10 @@ void sdp_eventAction::BeginOfEventAction(const G4Event* event)
   fEventSeedIndex = CLHEP::HepRandom::getTheSeed();
   fEventSeed1 = CLHEP::HepRandom::getTheSeeds()[0];
   fEventSeed2 = CLHEP::HepRandom::getTheSeeds()[1];
+  eNumber = event->GetEventID();
 
   fAnaTrack.clear();
+  fAnaInteraction.clear();
 }     
 
 void sdp_eventAction::EndOfEventAction(const G4Event* event)
@@ -39,7 +42,6 @@ void sdp_eventAction::EndOfEventAction(const G4Event* event)
 
   // const G4Run* thisRun = G4RunManager::GetRunManager()->GetCurrentRun();
   G4int totNumber = G4RunManager::GetRunManager()->GetNumberOfEventsToBeProcessed();
-  G4int eNumber = event->GetEventID();
   G4float perc = (eNumber/(float) totNumber)*100.;
   if((int) (perc*200000)%1000000==0)
   {
@@ -88,55 +90,37 @@ void sdp_eventAction::EndOfEventAction(const G4Event* event)
 
   analysisManager->AddNtupleRow(1);
 
-  // TRACK INFORMATION TIME
-  for ( const auto &thisId : fAnaTrack )
+
+  for ( const auto &thisInteraction : fAnaInteraction )
   {
-    G4int j = 0;
-    auto thisTrack = fAnaTrack[thisId.first];
+    G4int i = 0;
+    G4AnalysisManager* man = G4AnalysisManager::Instance();
+    man->FillNtupleIColumn(2,i,event->GetEventID()); i+=1;
+    man->FillNtupleSColumn(2,i,thisInteraction.name); i+=1;
+    man->FillNtupleIColumn(2,i,thisInteraction.pdg); i+=1;
+    man->FillNtupleIColumn(2,i,thisInteraction.trackId); i+=1;
+    man->FillNtupleIColumn(2,i,thisInteraction.parentId); i+=1;
 
-    if(thisTrack.enteredCollection)
-    // if(thisTrack.enteredHole)
-    {
-      analysisManager->FillNtupleIColumn(2,j,event->GetEventID()); j+=1;
-      analysisManager->FillNtupleSColumn(2,j,thisTrack.name); j+=1;
-      analysisManager->FillNtupleIColumn(2,j,thisTrack.pdg); j+=1;
-      analysisManager->FillNtupleIColumn(2,j,thisTrack.trackId); j+=1;
-      analysisManager->FillNtupleIColumn(2,j,thisTrack.parentId); j+=1;
-      // Coordinates start
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.xStart); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.yStart); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.zStart); j+=1;
-      // Momentum start
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.pxStart); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.pyStart); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.pzStart); j+=1;
-      // Time-energy start
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.eStart); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.kStart); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.tStart); j+=1;
-      // Coordinates end
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.xEnd); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.yEnd); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.zEnd); j+=1;
-      // Momentum end
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.pxEnd); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.pyEnd); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.pzEnd); j+=1;
-      // Time-energy end
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.eEnd); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.kEnd); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.tEnd); j+=1;
-      // Volume information
-      analysisManager->FillNtupleSColumn(2,j,thisTrack.volumeStart); j+=1;
-      analysisManager->FillNtupleSColumn(2,j,thisTrack.volumeEnd); j+=1;
-      // Energy deposited
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.distTravelled); j+=1;
-      analysisManager->FillNtupleDColumn(2,j,thisTrack.enDeposited_tot); j+=1;
-      analysisManager->FillNtupleIColumn(2,j,int(thisTrack.enteredCollection)); j+=1;
-      analysisManager->FillNtupleIColumn(2,j,int(thisTrack.exitedCollection)); j+=1;
+    man->FillNtupleDColumn(2,i,thisInteraction.xStart); i+=1;
+    man->FillNtupleDColumn(2,i,thisInteraction.yStart); i+=1;
+    man->FillNtupleDColumn(2,i,thisInteraction.zStart); i+=1;
+    man->FillNtupleDColumn(2,i,thisInteraction.tStart); i+=1;
 
-      // Save this row
-      analysisManager->AddNtupleRow(2);
-    }
+    man->FillNtupleDColumn(2,i,thisInteraction.xEnd); i+=1;
+    man->FillNtupleDColumn(2,i,thisInteraction.yEnd); i+=1;
+    man->FillNtupleDColumn(2,i,thisInteraction.zEnd); i+=1;
+    man->FillNtupleDColumn(2,i,thisInteraction.tEnd); i+=1;
+
+    man->FillNtupleSColumn(2,i,thisInteraction.preVolume); i+=1;
+    man->FillNtupleSColumn(2,i,thisInteraction.postVolume); i+=1;
+
+    man->FillNtupleSColumn(2,i,thisInteraction.preProcess); i+=1;
+    man->FillNtupleSColumn(2,i,thisInteraction.postProcess); i+=1;
+
+    man->FillNtupleDColumn(2,i,thisInteraction.incidentAngle); i+=1;
+
+    man->AddNtupleRow(2);
   }
+
+
 }

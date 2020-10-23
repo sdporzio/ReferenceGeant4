@@ -1,11 +1,12 @@
 ### TUNABLE PARAMETERS
-export SDP_NEVENTS=0
+export SDP_PROJECTNAME="incidentAngleTest"
+export SDP_NEVENTS=5
 export SDP_RANDOMSEED=100
 export SDP_VISUAL=1
 export SDP_OUTDIR="/Users/sdporzio/Data/Temp"
 
 ### DERIVED PARAMETERS
-export SDP_FILENAME="${SDP_HOLEOFFSET}-off_${SDP_NEVENTS}-ev_${SDP_RANDOMSEED}-s.root"
+export SDP_FILENAME="${SDP_PROJECTNAME}_${SDP_NEVENTS}-ev_${SDP_RANDOMSEED}-s.root"
 
 ### SOURCE GEANT4 (LOC-DEPENDING)
 if [ "$GAL" == "/Users/sdporzio/MOUNT/GALILEO" ]

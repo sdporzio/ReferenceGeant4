@@ -2,6 +2,7 @@
 
 #include "G4DecayPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
+#include "G4OpticalPhysics.hh"
 
 // #include "PhysListEmStandardNR.hh"
 
@@ -18,6 +19,8 @@
 sdp_physicsList::sdp_physicsList() 
 : G4VModularPhysicsList(){
   SetVerboseLevel(1);
+
+
 
   // Default physics
   RegisterPhysics(new G4DecayPhysics());

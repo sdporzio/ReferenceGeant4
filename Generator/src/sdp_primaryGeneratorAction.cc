@@ -31,15 +31,27 @@ sdp_primaryGeneratorAction::~sdp_primaryGeneratorAction(){}
 void sdp_primaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
 
+  G4double x_start = 10*mm;
+  G4double y_start = 0*mm;
+  G4double z_start = 0*mm;
+
   G4String particleName;
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4ParticleDefinition* alpha
-    = particleTable->FindParticle(particleName="alpha");
-  fParticleGun->SetParticleDefinition(alpha);
-  fParticleGun->SetParticleEnergy(5.48*MeV);
+  G4ParticleDefinition* photon
+    = particleTable->FindParticle(particleName="opticalphoton");
+  fParticleGun->SetParticleDefinition(photon);
+  fParticleGun->SetParticleEnergy(500.0*keV);
+  // fParticleGun->SetParticleEnergy(5.48*MeV);
 
-  fParticleGun->SetParticlePosition(G4ThreeVector(0,0,0));
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0,0,1));
+  fParticleGun->SetParticlePosition(G4ThreeVector(x_start,y_start,z_start));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(-1,0,0));
+
+  // Isotropic generation
+  // G4double cosT = -1.0 + G4UniformRand()*2.0; // ISOTROPIC
+  // G4double phi = G4UniformRand()*M_PI*2.;
+  // G4double sinT = sqrt(1-cosT*cosT);
+  // G4ThreeVector direction(sinT*sin(phi),sinT*cos(phi),cosT);
+  // fParticleGun->SetParticleMomentumDirection(direction);
   
   fParticleGun->GeneratePrimaryVertex(event);
 };

@@ -31,46 +31,35 @@ sdp_runAction::sdp_runAction() : G4UserRunAction()
   analysisManager->CreateNtupleIColumn("seed_event1");
   analysisManager->CreateNtupleIColumn("seed_event2");
 
-  // Create the tracks branch
-  analysisManager->CreateNtuple("tracks_data", "TracksData");             //ntuple-ID 2
+  // Create the interaction branch
+  analysisManager->CreateNtuple("interaction_data", "InteractionData");             //ntuple-ID 2
   analysisManager->CreateNtupleIColumn("event_number");
   analysisManager->CreateNtupleSColumn("particle_name");
   analysisManager->CreateNtupleIColumn("particle_pdg");
   analysisManager->CreateNtupleIColumn("tracks_id");
   analysisManager->CreateNtupleIColumn("parent_id");
+ 
   // Coordinates start
   analysisManager->CreateNtupleDColumn("xStart");
   analysisManager->CreateNtupleDColumn("yStart");
   analysisManager->CreateNtupleDColumn("zStart");
-  // Momentum start
-  analysisManager->CreateNtupleDColumn("pxStart");
-  analysisManager->CreateNtupleDColumn("pyStart");
-  analysisManager->CreateNtupleDColumn("pzStart");
-  // Time-energy start
-  analysisManager->CreateNtupleDColumn("eStart");
-  analysisManager->CreateNtupleDColumn("kStart");
   analysisManager->CreateNtupleDColumn("tStart");
   // Coordinates end
   analysisManager->CreateNtupleDColumn("xEnd");
   analysisManager->CreateNtupleDColumn("yEnd");
   analysisManager->CreateNtupleDColumn("zEnd");
-  // Momentum end
-  analysisManager->CreateNtupleDColumn("pxEnd");
-  analysisManager->CreateNtupleDColumn("pyEnd");
-  analysisManager->CreateNtupleDColumn("pzEnd");
-  // Time-energy end
-  analysisManager->CreateNtupleDColumn("eEnd");
-  analysisManager->CreateNtupleDColumn("kEnd");
   analysisManager->CreateNtupleDColumn("tEnd");
+
   // Volume information
-  analysisManager->CreateNtupleSColumn("volumeStart");
-  analysisManager->CreateNtupleSColumn("volumeEnd");
-  // Energy deposited
-  analysisManager->CreateNtupleDColumn("distTravelled");
-  analysisManager->CreateNtupleDColumn("enDeposited_tot");
-  // Collection status
-  analysisManager->CreateNtupleIColumn("enteredCollection");
-  analysisManager->CreateNtupleIColumn("exitedCollection");
+  analysisManager->CreateNtupleSColumn("preVolume");
+  analysisManager->CreateNtupleSColumn("postVolume");
+
+  // Process information
+  analysisManager->CreateNtupleSColumn("preProcess");
+  analysisManager->CreateNtupleSColumn("postProcess");
+
+  // Angle status
+  analysisManager->CreateNtupleDColumn("incidentAngle");
 
   analysisManager->FinishNtuple();
 }

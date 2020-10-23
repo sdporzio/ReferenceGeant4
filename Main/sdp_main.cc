@@ -5,6 +5,9 @@
 #include "G4UImanager.hh"
 #include "QBBC.hh"
 #include "Randomize.hh"
+#include "FTFP_BERT.hh"
+#include "G4OpticalPhysics.hh"
+#include "G4EmStandardPhysics_option4.hh"
 // PROJECTS INCLUDE
 #include "sdp_detectorConstruction.hh"
 #include "sdp_physicsList.hh"
@@ -35,14 +38,23 @@ int main(int argc,char** argv)
   G4RunManager* runManager = new G4RunManager;
 
   // MANDATORY USER INITIALIZATION CLASSES
+
   // Detector class
   sdp_detectorConstruction* myDetector = new sdp_detectorConstruction();
   runManager->SetUserInitialization(myDetector);
+
   // Physics list class
-  G4VModularPhysicsList* myPhysicsList = new QBBC;
+  // G4VModularPhysicsList* myPhysicsList = new QBBC;
   // G4VModularPhysicsList* myPhysicsList = new sdp_physicsList();
+
+  // Temporary override for optical physics
+  G4VModularPhysicsList* myPhysicsList = new FTFP_BERT;
+  myPhysicsList->ReplacePhysics(new G4EmStandardPhysics_option4());
+  G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
+  myPhysicsList->RegisterPhysics(opticalPhysics);
   myPhysicsList->SetVerboseLevel(1);
   runManager->SetUserInitialization(myPhysicsList);
+
   // Action class
   sdp_actionInitialization* myAction = new sdp_actionInitialization();
   runManager->SetUserInitialization(myAction);

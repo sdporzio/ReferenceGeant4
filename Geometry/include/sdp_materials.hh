@@ -8,6 +8,8 @@ class sdp_materials
   public:
     sdp_materials();
     virtual ~sdp_materials();
+
+    G4Material* vacuum;
 };
 
 #endif

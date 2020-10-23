@@ -19,9 +19,6 @@ class sdp_detectorConstruction : public G4VUserDetectorConstruction
 
   private:
     G4GenericMessenger* fMessenger; // Generic messenger class
-    G4int fHoleType;
-    G4float fHoleWidth;
-    G4float fHoleOffset;
 
 };
 
